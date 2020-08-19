@@ -1,8 +1,15 @@
 #include <stdio.h>
 
+static void bar(int data)
+{
+    printf("%s %d\n", __func__, data);
+}
+
 int main(void)
 {
-    printf("Test 1\n");
+    unsigned int test = 1;
+
+    printf("\n--- Test %u ---\n", test++);
     {
         int a[5] = {1, 2, 3, 4, 5};
         int *p = (int *)(&a + 1);
@@ -18,7 +25,7 @@ int main(void)
 #endif
     }
 
-    printf("\nTest 2\n");
+    printf("\n--- Test %u ---\n", test++);
     {
         int a[]={1,2,3,4,5,6,7,8,9,0};
         int b[2][3][4];
@@ -37,6 +44,15 @@ int main(void)
 
         printf("*(b + 1) + 1 = %p\n", (*(b+1) + 1));
     }
+
+    printf("\n--- Test %u ---\n", test++);
+    {
+        void (*foo)(int);
+
+        foo = bar;
+        foo(257);
+    }
+
 
     return 0;
 }
