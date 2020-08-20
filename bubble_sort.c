@@ -26,14 +26,16 @@ void bubble_sort(char *a, int len)
 int main(void)
 {
     char arr[10] = {71,66,19,20,8,43,54,3,2,10};
+    const int len = sizeof(arr)/sizeof(arr[0]);
+    int i;
 
-    for (int i = 0; i < sizeof(arr)/sizeof(arr[0]); i += 1)
+    for (i = 0; i < len; i += 1)
         printf("%d ", arr[i]);
     printf("\n");
 
-    bubble_sort(arr, sizeof(arr)/sizeof(arr[0]));
+    bubble_sort(arr, len);
 
-    for (int i = 0; i < sizeof(arr)/sizeof(arr[0]); i += 1)
+    for (i = 0; i < len; i += 1)
         printf("%d ", arr[i]);
     printf("\n");
 
