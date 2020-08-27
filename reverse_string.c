@@ -13,25 +13,25 @@ static void swap(char *a, char *b)
     *a = tmp;
 }
 
-void reverse_str0(char *str)
+void reverse_str0(char *s)
 {
-    const unsigned int len = strlen(str);
-    char *e = str + len - 1;
+    const unsigned int len = strlen(s);
+    char *e = s + len - 1;
 
-    for (int i = len; i > (len >> 1); i -= 1) {
-        SWAP(*str, *e);
-        str += 1;
+    while (e > s) {
+        SWAP(*s, *e);
+        s += 1;
         e -= 1;
     }
 }
 
-void reverse_str1(char *str)
+void reverse_str1(char *s)
 {
-    const unsigned int len = strlen(str);
-    char *e = str + len - 1;
+    const unsigned int len = strlen(s);
+    char *e = s + len - 1;
 
-    for (int i = len; i > (len >> 1); i -= 1) {
-        swap(str++, e--);
+    while (e > s) {
+        swap(s++, e--);
     }
 }
 
