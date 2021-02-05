@@ -15,12 +15,10 @@ static void swap(char *a, char *b)
 
 void bubble_sort(char *a, int len)
 {
-    if (len) {
-        for (len -= 1; len != 0; len -= 1) {
-            for (int i = 0; i < len; i += 1) {
-                if (a[i] > a[i + 1])
-                    swap(&a[i], &a[i + 1]);
-            }
+    for (len -= 1; len > 0; len -= 1) {
+        for (int i = 0; i < len; i += 1) {
+            if (a[i] > a[i + 1])
+                swap(&a[i], &a[i + 1]);
         }
     }
 }
