@@ -19,7 +19,7 @@ int main(void)
         printf("*(p - 1) 0x%x\n", *(p - 1));
 
 #if 0 /* Outout, https://ide.geeksforgeeks.org/LI6x2TQTnG */
-        *(a - 1) 0x2
+        *(a + 1) 0x2
         *(p - 1) 0x5
 #endif
     }
@@ -41,7 +41,7 @@ int main(void)
         printf("b     = %p   , &b     = %p\n", b, &b);
         printf("b + 1 = %p %d, &b + 1 = %p %d\n\n", b + 1, delta1, &b + 1, delta2);
 
-        printf("*(b + 1) + 1 = %p\n", (*(b+1) + 1));
+        printf("*(b + 1) + 1 = %p\n", (*(b + 1) + 1));
 
 #if 0 /* Output */
         a     = 0x7ffe03f90b50  , &a     = 0x7ffe03f90b50
