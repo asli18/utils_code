@@ -15,18 +15,20 @@ static void swap(char *a, char *b)
 
 void bubble_sort(char *a, int len)
 {
-    for (; len != 0; len -= 1) {
-        for (int i = 0; i < (len - 1); i += 1) {
-            if (a[i] > a[i + 1])
-                swap(&a[i], &a[i + 1]);
+    if (len) {
+        for (len -= 1; len != 0; len -= 1) {
+            for (int i = 0; i < len; i += 1) {
+                if (a[i] > a[i + 1])
+                    swap(&a[i], &a[i + 1]);
+            }
         }
     }
 }
 
 int main(void)
 {
-    char arr[10] = {71,66,19,20,8,43,54,3,2,10};
-    const int len = sizeof(arr)/sizeof(arr[0]);
+    char arr[10] = {71, 66, 19, 20, 8, 43, 54, 3, 2, 10};
+    const int len = sizeof(arr) / sizeof(arr[0]);
     int i;
 
     for (i = 0; i < len; i += 1)
