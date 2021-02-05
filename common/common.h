@@ -20,8 +20,8 @@
 /* bit operation */
 #define BIT32_MASK(off, len)                ((U32)((~((~0ul) << (len))) << (off)))
 
-#define SET_BIT32(var, bit)                 ((var) = (var) | ((1ul) << (bit)))
-#define CLR_BIT32(var, bit)                 ((var) = (var) & ~((1ul) << (bit)))
+#define SET_BIT32(var, bit)                 ((var) |= ((1ul) << (bit)))
+#define CLR_BIT32(var, bit)                 ((var) &= ~((1ul) << (bit)))
 #define GET_BIT32(var, bit)                 (((var) >> (bit)) & 1ul)
 
 #define SWAP(a, b)                          (((a) ^ (b)) ? ((b) ^= (a) ^= (b), (a) ^= (b)) : 0)
