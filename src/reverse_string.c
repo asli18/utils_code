@@ -36,6 +36,7 @@ static void reverse_str(char *s)
 }
 #endif
 
+// reverse string
 int test_3(void)
 {
     char s0[] = "1";
@@ -56,6 +57,45 @@ int test_3(void)
     reverse_str(s2);
     reverse_str(s3);
     printf("%s %s %s %s\n", s0, s1, s2, s3);
+
+    return 0;
+}
+
+
+// Reverse words in a string
+void reverse_words(char *str) {
+    int len = strlen(str);
+    char *start = str;
+
+    for (int i = 0; i < len; i++) {
+        if (str[i] == ' ') {
+            // Reverse the word between start and i-1
+            char *end = str + i - 1;
+            while (start < end) {
+                swap(start++, end--);
+            }
+            start = str + i + 1;
+        }
+    }
+
+    // Reverse the last word
+    char *end = str + len - 1;
+    while (start < end) {
+        swap(start++, end--);
+    }
+}
+
+int test_4(void) {
+    char s0[] = "hello world, how are you?";
+    char s1[] = "1234 abc, xyz";
+
+    printf("ori: %s\n", s0);
+    reverse_words(s0);
+    printf("rev: %s\n", s0);
+
+    printf("ori: %s\n", s1);
+    reverse_words(s1);
+    printf("rev: %s\n", s1);
 
     return 0;
 }
