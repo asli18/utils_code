@@ -9,6 +9,7 @@ void test_case(uint32_t no) {
         test_0,
         test_1,
         test_2,
+        test_3, // reverse string
     };
     uint32_t bound = sizeof(test_ptr)/sizeof(*test_ptr);
 

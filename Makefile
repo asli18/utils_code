@@ -1,5 +1,6 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c99 -g
+CFLAGS = -Wall -Wextra -std=c18
+#CFLAGS += -Wno-unused-value
 LDFLAGS =
 
 TARGET_EXEC := test
