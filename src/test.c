@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdint.h>
 #include <string.h>
 
 
@@ -93,6 +94,23 @@ int test_2(void) {
     printf("a 0x%04X\r\n", a);
     printf("b 0x%04X\r\n", b);
     printf("c 0x%04X\r\n", c);
+
+    return 0;
+}
+
+// 9 x 9 Multiplication table
+int test_5(void) {
+    uint32_t a = 9, b = 9;
+
+    do {
+        printf("%u x %u = %2u\n", a, b, (a * b));
+
+        if (--b == 0) {
+            b = 9;
+            a -= 1;
+            printf("\n");
+        }
+    } while (a);
 
     return 0;
 }

@@ -11,6 +11,7 @@ void test_case(uint32_t no) {
         test_2,
         test_3, // reverse string
         test_4, // reverse words in a string
+        test_5, // 9 x 9 Multiplication table
     };
     uint32_t bound = sizeof(test_ptr)/sizeof(*test_ptr);
 
