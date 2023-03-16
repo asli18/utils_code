@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c18
+CFLAGS = -Wall -Wextra -std=c18 #-g
 #CFLAGS += -Wno-unused-value
 LDFLAGS =
 

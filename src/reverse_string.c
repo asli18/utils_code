@@ -27,16 +27,16 @@ static void swap(char *a, char *b)
 
 static void reverse_str(char *s)
 {
-    const unsigned int len = strlen(s);
-    char *e = s + len - 1;
-
-    while (e > s) {
-        swap(s++, e--);
+    if (s) {
+        char *e = s + strlen(s) - 1;
+        while (e > s) {
+            swap(s++, e--);
+        }
     }
 }
 #endif
 
-// reverse string
+// Reverse a string
 int test_3(void)
 {
     char s0[] = "1";
@@ -44,8 +44,10 @@ int test_3(void)
     char s2[] = "123456";
     char s3[] = "1234567";
 
+    printf("Reverse a string\n");
     printf("%s %s %s %s\n", s0, s1, s2, s3);
 
+    reverse_str(NULL);
     reverse_str(s0);
     reverse_str(s1);
     reverse_str(s2);
@@ -64,10 +66,14 @@ int test_3(void)
 
 // Reverse words in a string
 void reverse_words(char *str) {
-    int len = strlen(str);
+    if (str == NULL) {
+        return;
+    }
+
+    const unsigned int len = strlen(str);
     char *start = str;
 
-    for (int i = 0; i < len; i++) {
+    for (unsigned int i = 0; i < len; i++) {
         if (str[i] == ' ') {
             // Reverse the word between start and i-1
             char *end = str + i - 1;
@@ -89,6 +95,7 @@ int test_4(void) {
     char s0[] = "hello world, how are you?";
     char s1[] = "1234 abc, xyz";
 
+    printf("Reverse words in a string\n");
     printf("ori: %s\n", s0);
     reverse_words(s0);
     printf("rev: %s\n", s0);

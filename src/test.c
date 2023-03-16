@@ -114,3 +114,32 @@ int test_5(void) {
 
     return 0;
 }
+
+// MSB->LSB, LSB->MSB
+int test_6(void) {
+    printf("Reverse bits MSB->LSB LSB->MSB (32-bit)\n");
+    {
+        uint32_t target = 0x815a070f;
+        uint32_t output = 0;
+
+        for (uint32_t i = 0; i < 32; ++i) {
+            output |= ((target >> i) & 1) << (31 - i);
+        }
+        printf("ori: 0x%08x\n", target);
+        printf("rev: 0x%08x\n", output);
+    }
+
+    printf("Reverse bits MSB->LSB LSB->MSB (64-bit)\n");
+    {
+        uint64_t target = 0xffff7070815a070f;
+        uint64_t output = 0;
+
+        for (uint32_t i = 0; i < 64; ++i) {
+            output |= ((target >> i) & 1) << (63 - i);
+        }
+        printf("ori: 0x%016lx\n", target);
+        printf("rev: 0x%016lx\n", output);
+    }
+
+    return 0;
+}
