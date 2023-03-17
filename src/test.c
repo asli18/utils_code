@@ -5,16 +5,73 @@
 
 int test_0(void) {
 
+    {
+        uint32_t num = 1;
+        char *ptr = (char *)&num;
+
+        if (*ptr == 1) {
+            printf("little-endian\n");
+        } else {
+            printf("big-endian\n");
+        }
+        printf("-----------------------\n");
+    }
     {   /* 64bit unsigned long */
         unsigned long foo = ~0u;
         unsigned long bar = ~0ul;
 
         printf("unsigned long foo = ~0u;\n");
         printf("unsigned long bar = ~0ul;\n");
+        printf("\noutput:\n");
         printf("foo %016lx\n", foo);
         printf("bar %016lx\n", bar);
         printf("-----------------------\n");
     }
+    {
+        int a[5];                  // if address of a is 0x1000
+        int *p1 = (int *)(a + 1);  // p1 should be 0x1004
+        int *p2 = (int *)(&a + 1); // p2 should be 0x1014
+        printf("int a[5]; // if address of a is 0x1000\n");
+        printf("int *p1 = (int *)(a + 1);  // p1 should be 0x1004\n");
+        printf("int *p2 = (int *)(&a + 1); // p2 should be 0x1014\n");
+        printf("\noutput:\n");
+        printf("sizeof(a)=%ld, sizeof(&a)=%ld\n", sizeof(a), sizeof(&a));
+        printf("a  0x%016lx\n", (uint64_t)a);
+        printf("p1 0x%016lx (int *)(a + 1) = a[1]\n", (uint64_t)p1);
+        printf("p2 0x%016lx\n", (uint64_t)p2);
+        printf("-----------------------\n");
+    }
+    {
+        unsigned char s[3], mask = 0x3F;
+        short a, b, c;
+
+        s[0] = 0xE6;
+        s[1] = 0xB1;
+        s[2] = 0x89;
+
+        a = (short)(s[2] & mask);
+        b = (short)(((s[1] & mask) << 8) | (s[2] & mask));
+        c = (short)((s[0] << 12) | ((s[1] & mask) << 6) | (s[2] & mask));
+
+        printf("unsigned char s[3], mask = 0x3F;\n");
+        printf("short a, b, c;\n");
+        printf("s[0] = 0xE6;\n");
+        printf("s[1] = 0xB1;\n");
+        printf("s[2] = 0x89;\n");
+        printf("a = (short)(s[2] & mask);                                        \n");
+        printf("b = (short)(((s[1] & mask) << 8) | (s[2] & mask));               \n");
+        printf("c = (short)((s[0] << 12) | ((s[1] & mask) << 6) | (s[2] & mask));\n");
+
+        printf("\noutput:\n");
+        printf("a 0x%04x\n", a);
+        printf("b 0x%04x\n", b);
+        printf("c 0x%04x\n", c);
+    }
+
+    return 0;
+}
+
+int test_1(void) {
     {
         int array[8] = { -1, 0, 1, 2, 3, 4, 5, 6};
         char string[8] = { -1, 0, 1, 2, 3, 4, 5, 6};
@@ -24,9 +81,9 @@ int test_0(void) {
         printf("int array[8] = { -1, 0, 1, 2, 3, 4, 5, 6};\n" \
                "char string[8] = { -1, 0, 1, 2, 3, 4, 5, 6};\n" \
                "short *data = (short *)string;\n" \
-               "unsigned short *data2 = (unsigned short *)array;\n");
+               "unsigned short *data2 = (unsigned short *)array;\n\n");
 
-        printf("-----------------------\n");
+        printf("\noutput:\n");
         printf("sizeof(char)        %lu\n", sizeof(char));
         printf("sizeof(short)       %lu\n", sizeof(short));
         printf("sizeof(int)         %lu\n", sizeof(int));
@@ -42,58 +99,58 @@ int test_0(void) {
         printf("sizeof(&string[0])  %lu\n", sizeof(&string[0]));
         printf("sizeof(data)        %lu\n", sizeof(data));
         printf("sizeof(*data)       %lu\n", sizeof(*data));
-        printf("-----------------------\n");
-        printf("string[0]           %d\n", string[0]);
-        printf("string[8]           %d\n", string[8]);
-        printf("array[7]            %d\n", array[7]);
-        printf("data[0]             %d\n", data[0]);
-        printf("data[7]             %d\n", data[7]);
-        printf("data2[0]            %d\n", data2[0]);
-        printf("data2[3]            %d\n", data2[3]);
-        printf("data2[4]            %d\n", data2[4]);
-        printf("data2[5]            %d\n", data2[5]);
-        printf("*(data2 + 9)        %d\n", *(data2 + 9));
-        printf("*(data + 1)         %d\n", *(data + 1));
+        printf("\n");
+        printf("array  address: 0x%016lx\n", (uint64_t)&array);
+        printf("string address: 0x%016lx\n", (uint64_t)&string);
+        printf("data   address: 0x%016lx\n", (uint64_t)data);
+        printf("data2  address: 0x%016lx\n", (uint64_t)data2);
+        printf("\n");
+        printf("string[0]      %6d\n", string[0]);
+        printf("string[8]      %6d (out of range)\n", string[8]);
+        printf("array[7]       %6d\n", array[7]);
+        printf("data[0]        %6d 0x%04x\n", data[0], data[0]);
+        printf("data[7]        %6d 0x%04x (out of range)\n", data[7], data[7]);
+        printf("data2[0]       %6d 0x%04x\n", data2[0], data2[0]);
+        printf("data2[3]       %6d 0x%04x\n", data2[3], data2[3]);
+        printf("data2[4]       %6d 0x%04x\n", data2[4], data2[4]);
+        printf("data2[5]       %6d 0x%04x\n", data2[5], data2[5]);
+        printf("*(data2 + 9)   %6d 0x%04x\n", *(data2 + 9), *(data2 + 9));
+        printf("*(data + 1)    %6d 0x%04x\n", *(data + 1), *(data + 1));
+        printf("\n");
+
         *data = 0x1234;
-        printf("string[0]           %d\n", string[0]);
+        printf("*data = 0x1234;\n");
+        printf("string[0]      %6d 0x%02x\n", string[0], string[0]);
 
     }
 
     return 0;
 }
 
-int test_1(void) {
+// type promotion
+int test_2(void) {
     {
+        printf("unsigned char a = 6;\n" \
+               "char b = -20;\n" \
+               "(a + b > 6) ? printf(\"> 6\") : printf(\"<= 6\");\n");
+
+        printf("\noutput:\n");
         unsigned char a = 6;
         char b = -20;
         (a + b > 6) ? printf("> 6") : printf("<= 6");
     }
-    printf("\n");
+    printf("\n-----------------------\n");
     {
+        printf("unsigned int a = 6;;\n" \
+               "int b = -20;\n" \
+               "(a + b > 6) ? printf(\"> 6\") : printf(\"<= 6\");\n");
+
+        printf("\noutput:\n");
         unsigned int a = 6;
         int b = -20;
         (a + b > 6) ? printf("> 6") : printf("<= 6");
     }
     printf("\n");
-
-    return 0;
-}
-
-int test_2(void) {
-    unsigned char s[3], mask = 0x3F;
-    short a, b, c;
-
-    s[0] = 0xE6;
-    s[1] = 0xB1;
-    s[2] = 0x89;
-
-    a = (short)(s[2] & mask);
-    b = (short)(((s[1] & mask) << 8) | (s[2] & mask));
-    c = (short)((s[0] << 12) | ((s[1] & mask) << 6) | (s[2] & mask));
-
-    printf("a 0x%04X\r\n", a);
-    printf("b 0x%04X\r\n", b);
-    printf("c 0x%04X\r\n", c);
 
     return 0;
 }

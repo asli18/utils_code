@@ -8,7 +8,7 @@ void test_case(uint32_t no) {
     int (*test_ptr[])(void) = {
         test_0,
         test_1,
-        test_2,
+        test_2, // type promotion
         test_3, // Reverse a string
         test_4, // Reverse words in a string
         test_5, // 9 x 9 Multiplication table

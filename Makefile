@@ -1,5 +1,6 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c18 #-g
+CFLAGS = -Wall -Wextra -std=c18
+#CFLAGS += -g # debug
 #CFLAGS += -Wno-unused-value
 LDFLAGS =
 
