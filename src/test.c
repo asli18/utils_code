@@ -200,3 +200,65 @@ int test_6(void) {
 
     return 0;
 }
+
+/*
+ * C program to print following pyramid
+ *     1
+ *    121
+ *   12321
+ *  1234321
+ * 123454321
+ */
+int test_7(void)
+{
+#define LOOP_NUM        (5)
+
+    uint32_t y, x;
+
+    printf("Full pyramid of numbers:\n");
+
+    /* Run parent loop */
+    for (y = LOOP_NUM; y > 0; --y) {
+        /* Print space */
+        for(x = y - 1; x > 0; --x) {
+            printf(" ");
+        }
+
+        /* Run loop to print first part of row */
+        for(x = 1; x <= (LOOP_NUM - y) + 1; ++x) {
+            printf("%d", x);
+        }
+
+        /* Run loop to print second part of row */
+        for(x = (LOOP_NUM - y); x > 0; --x) {
+            printf("%d", x);
+        }
+
+        printf("\n");
+    }
+
+    printf("\nInverted:\n");
+
+    /* Run parent loop */
+    for (y = LOOP_NUM; y > 0; --y) {
+        /* Print space */
+        for (x = LOOP_NUM - y; x != 0; --x) {
+            printf(" ");
+        }
+
+        /* Run loop to print first part of row */
+        for (x = 1; x <= y; ++x) {
+            printf("%d", x);
+        }
+
+        /* Run loop to print second part of row */
+        for (x = y - 1; x >= 1; --x) {
+            printf("%d",x);
+        }
+
+        printf("\n");
+    }
+
+    return 0;
+}
+

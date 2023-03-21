@@ -13,6 +13,7 @@ void test_case(uint32_t no) {
         test_4, // Reverse words in a string
         test_5, // 9 x 9 Multiplication table
         test_6, // Reverse bits (32/64-bit)
+        test_7, // print a full pyramid of numbers
     };
     uint32_t bound = sizeof(test_ptr)/sizeof(*test_ptr);
 
