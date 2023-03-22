@@ -49,7 +49,8 @@ install: $(BUILD_DIR)/$(TARGET_EXEC)
 
 .PHONY: clean
 clean:
-	@rm -r $(BUILD_DIR) $(INSTALL_DIR)
+	@rm -rf "$(BUILD_DIR)" "$(INSTALL_DIR)"
+
 
 # Include the .d makefiles. The - at the front suppresses the errors of missing
 # Makefiles. Initially, all the .d files will be missing, and we don't want those

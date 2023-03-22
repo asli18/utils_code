@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
 
 
@@ -262,3 +263,35 @@ int test_7(void)
     return 0;
 }
 
+int is_prime(int num) {
+    if (num == 2 || num == 3) {
+        return 1;
+    }
+    // skip 1 and even number
+    if (num == 1 || ((num & 1) == 0)) {
+        return 0;
+    }
+    // +2 skip even number
+    for (int i = 3; i * i <= num; i += 2) {
+        if (num % i == 0) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+// check prime number
+int test_8(void) {
+#define MAX     (30)
+    unsigned int count, num;
+
+    printf("Prime number:\n");
+    for (count = 0, num = 1; count < MAX; ++num) {
+        if (is_prime(num)) {
+            count += 1;
+            printf("No.%3u  %3u\r\n", count, num);
+        }
+    }
+
+    return 0;
+}
