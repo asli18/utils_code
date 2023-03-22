@@ -29,6 +29,44 @@ int test_0(void) {
         printf("-----------------------\n");
     }
     {
+        struct rtp_header {
+            unsigned cc:4;
+            unsigned x:1;
+            unsigned p:1;
+            unsigned v:2;
+            unsigned pt:7;
+            unsigned m:1;
+            unsigned short sequence_number;
+            unsigned int timestamp;
+            unsigned int ssrc;
+            unsigned int csrc[0];
+        } __attribute__((packed));
+
+        struct rtp_header *header;
+
+        printf("sizeof(struct rtp_header) = %lu\n", sizeof(struct rtp_header));
+        printf("sizeof(*header) = %lu\n", sizeof(*header));
+        printf("sizeof(header) = %lu\n", sizeof(header));
+        printf("-----------------------\n");
+    }
+    { // Alignment of Structure
+        struct nf_buffer1 {
+            char data[10];
+            int size;
+            short start;
+            short count;
+        };
+        struct nf_buffer2 {
+            char data[10];
+            int size;
+            short start;
+            short count;
+        }__attribute__((packed));
+        printf("sizeof(struct nf_buffer1) = %lu\n", sizeof(struct nf_buffer1));
+        printf("sizeof(struct nf_buffer2) = %lu\n", sizeof(struct nf_buffer2));
+        printf("-----------------------\n");
+    }
+    {
         int a[5];                  // if address of a is 0x1000
         int *p1 = (int *)(a + 1);  // p1 should be 0x1004
         int *p2 = (int *)(&a + 1); // p2 should be 0x1014
