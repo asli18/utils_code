@@ -15,6 +15,7 @@ void test_case(uint32_t no) {
         test_6, // Reverse bits (32/64-bit)
         test_7, // print a full pyramid of numbers
         test_8, // check prime number
+        test_9, // bubble sort
     };
     uint32_t bound = sizeof(test_ptr)/sizeof(*test_ptr);
 
