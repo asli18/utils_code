@@ -125,3 +125,18 @@ U32 cal_gcd(U32 a, U32 b)
     return a;
 }
 
+void set_bit(U32 *bit_map, U32 n)
+{
+    bit_map[WORD_OFFSET(n)] |= (1 << BIT_OFFSET(n));
+}
+
+void clear_bit(U32 *bit_map, U32 n)
+{
+    bit_map[WORD_OFFSET(n)] &= ~(1 << BIT_OFFSET(n));
+}
+
+BOOL get_bit(U32 *bit_map, U32 n)
+{
+    U32 bit = bit_map[WORD_OFFSET(n)] & (1 << BIT_OFFSET(n));
+    return bit != 0;
+}

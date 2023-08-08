@@ -3,33 +3,42 @@
 #include "_types.h"
 
 
-#define CHK_ALIGN_2                         (0x01ul)
-#define CHK_ALIGN_4                         (0x03ul)
-#define CHK_ALIGN_1K                        (0x400ul - 1)
+#define CHK_ALIGN_2                     (0x01ul)
+#define CHK_ALIGN_4                     (0x03ul)
+#define CHK_ALIGN_1K                    (0x400ul - 1)
 
-#define TEST_ALIGN_2(a)                     (((a) & CHK_ALIGN_2) != 0)
-#define TEST_ALIGN_4(a)                     (((a) & CHK_ALIGN_4) != 0)
+#define TEST_ALIGN_2(a)                 (((a) & CHK_ALIGN_2) != 0)
+#define TEST_ALIGN_4(a)                 (((a) & CHK_ALIGN_4) != 0)
 
-#define SET_INC_ALIGN_2(x)                  (((x) + (CHK_ALIGN_2)) & ~(CHK_ALIGN_2))
-#define SET_DEC_ALIGN_2(x)                  ((x) & ~(CHK_ALIGN_2))
-#define SET_INC_ALIGN_4(x)                  (((x) + (CHK_ALIGN_4)) & ~(CHK_ALIGN_4))
-#define SET_DEC_ALIGN_4(x)                  ((x) & ~(CHK_ALIGN_4))
-#define SET_INC_ALIGN_1K(x)                 (((x) + (CHK_ALIGN_1K)) & ~(CHK_ALIGN_1K))
-#define SET_DEC_ALIGN_1K(x)                 ((x) & ~(CHK_ALIGN_1K))
+#define SET_INC_ALIGN_2(x)              (((x) + (CHK_ALIGN_2)) & ~(CHK_ALIGN_2))
+#define SET_DEC_ALIGN_2(x)              ((x) & ~(CHK_ALIGN_2))
+#define SET_INC_ALIGN_4(x)              (((x) + (CHK_ALIGN_4)) & ~(CHK_ALIGN_4))
+#define SET_DEC_ALIGN_4(x)              ((x) & ~(CHK_ALIGN_4))
+#define SET_INC_ALIGN_1K(x)             (((x) + (CHK_ALIGN_1K)) & ~(CHK_ALIGN_1K))
+#define SET_DEC_ALIGN_1K(x)             ((x) & ~(CHK_ALIGN_1K))
 
 /* bit operation */
-#define BIT32_MASK(off, len)                ((U32)((~((~0ul) << (len))) << (off)))
+#define BIT32_MASK(off, len)            ((U32)((~((~0ul) << (len))) << (off)))
 
-#define SET_BIT32(var, bit)                 ((var) |= ((1ul) << (bit)))
-#define CLR_BIT32(var, bit)                 ((var) &= ~((1ul) << (bit)))
-#define GET_BIT32(var, bit)                 (((var) >> (bit)) & 1ul)
+#define SET_BIT32(var, bit)             ((var) |= ((1ul) << (bit)))
+#define CLR_BIT32(var, bit)             ((var) &= ~((1ul) << (bit)))
+#define GET_BIT32(var, bit)             (((var) >> (bit)) & 1ul)
 
-#define SWAP(a, b)                          (((a) ^ (b)) ? ((b) ^= (a) ^= (b), (a) ^= (b)) : 0)
+#define SWAP(a, b)                      (((a) ^ (b)) ? ((b) ^= (a) ^= (b), (a) ^= (b)) : 0)
+//#define SWAP(a, b)                      (((a) ^ (b)) && ((b) ^= (a) ^= (b), (a) ^= (b)))
+
+#define MIN(X, Y)                       (((X) < (Y)) ? (X) : (Y))
 
 /* bitmap */
-#define SET_BMAP(a, b)                      ((a)[(b) >> 5] |= (1ul << ((b) & 31)))
-#define CLR_BMAP(a, b)                      ((a)[(b) >> 5] &= ~(1ul << ((b) & 31)))
-#define GET_BMAP(a, b)                      (((a)[(b) >> 5] & (1ul << ((b) & 31))) != 0)
+#define BITMAP_SHIFT                    (5)
+#define BITMAP_MASK                     (31)
+#define SET_BMAP(a, b)                  ((a)[(b) >> BITMAP_SHIFT] |= (1ul << ((b) & BITMAP_MASK)))
+#define CLR_BMAP(a, b)                  ((a)[(b) >> BITMAP_SHIFT] &= ~(1ul << ((b) & BITMAP_MASK)))
+#define GET_BMAP(a, b)                  (((a)[(b) >> BITMAP_SHIFT] & \
+                                            (1ul << ((b) & BITMAP_MASK))) != 0)
+
+#define WORD_OFFSET(b)                  ((b) >> (BITMAP_SHIFT))
+#define BIT_OFFSET(b)                   ((b) & (BITMAP_MASK))
 
 #define NOP() \
     ({ __asm__ __volatile__ ("nop"); })

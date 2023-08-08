@@ -51,16 +51,16 @@ static int prints(char **out, const char *string, int width, int pad)
         if (pad & PAD_ZERO) padchar = '0';
     }
     if (!(pad & PAD_RIGHT)) {
-        for ( ; width > 0; --width) {
+        for (; width > 0; --width) {
             printchar (out, padchar);
             ++pc;
         }
     }
-    for ( ; *string ; ++string) {
+    for (; *string ; ++string) {
         printchar (out, *string);
         ++pc;
     }
-    for ( ; width > 0; --width) {
+    for (; width > 0; --width) {
         printchar (out, padchar);
         ++pc;
     }
@@ -133,46 +133,46 @@ static int print(char **out, const char *format, va_list args)
                 ++format;
                 pad |= PAD_ZERO;
             }
-            for ( ; *format >= '0' && *format <= '9'; ++format) {
+            for (; *format >= '0' && *format <= '9'; ++format) {
                 width *= 10;
                 width += *format - '0';
             }
-            if ( *format == 's' ) {
-                register char *s = (char *)va_arg( args, int );
-                pc += prints (out, s ? s : "(null)", width, pad);
+            if (*format == 's') {
+                register char *s = (char *)va_arg(args, int);
+                pc += prints(out, s ? s : "(null)", width, pad);
                 continue;
             }
-            if ( *format == 'd' ) {
-                pc += printi (out, va_arg( args, int ), 10, 1, width, pad, 'a');
+            if (*format == 'd') {
+                pc += printi (out, va_arg(args, int), 10, 1, width, pad, 'a');
                 continue;
             }
-            if ( *format == 'x' ) {
-                pc += printi (out, va_arg( args, int ), 16, 0, width, pad, 'a');
+            if (*format == 'x') {
+                pc += printi(out, va_arg(args, int), 16, 0, width, pad, 'a');
                 continue;
             }
-            if ( *format == 'X' ) {
-                pc += printi (out, va_arg( args, int ), 16, 0, width, pad, 'A');
+            if (*format == 'X') {
+                pc += printi(out, va_arg(args, int), 16, 0, width, pad, 'A');
                 continue;
             }
-            if ( *format == 'u' ) {
-                pc += printi (out, va_arg( args, int ), 10, 0, width, pad, 'a');
+            if (*format == 'u') {
+                pc += printi(out, va_arg(args, int), 10, 0, width, pad, 'a');
                 continue;
             }
-            if ( *format == 'c' ) {
+            if (*format == 'c') {
                 /* char are converted to int then pushed on the stack */
-                scr[0] = (char)va_arg( args, int );
+                scr[0] = (char)va_arg(args, int);
                 scr[1] = '\0';
-                pc += prints (out, scr, width, pad);
+                pc += prints(out, scr, width, pad);
                 continue;
             }
         } else {
         out:
-            printchar (out, *format);
+            printchar(out, *format);
             ++pc;
         }
     }
     if (out) **out = '\0';
-    va_end( args );
+    va_end(args);
     return pc;
 }
 
@@ -180,16 +180,16 @@ int _serial_printf(const char *format, ...)
 {
     va_list args;
 
-    va_start( args, format );
-    return print( 0, format, args );
+    va_start(args, format);
+    return print(0, format, args);
 }
 
 int sprintf(char *out, const char *format, ...)
 {
     va_list args;
 
-    va_start( args, format );
-    return print( &out, format, args );
+    va_start(args, format);
+    return print(&out, format, args);
 }
 
 
