@@ -1,6 +1,7 @@
 #ifndef _TEST_H_
 #define _TEST_H_
 
+int cmd_test_case(int argc, char *argv[]);
 int test_0(void);
 int test_1(void);
 int test_2(void);

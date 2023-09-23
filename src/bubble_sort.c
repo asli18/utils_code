@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <config.h>
 
 #define SWAP(a, b)          ((((a) ^ (b))) && (((b) ^= (a) ^= (b)), ((a) ^= (b))))
 
@@ -26,21 +27,20 @@ void bubble_sort(int *a, unsigned int len) {
     }
 }
 
-int test_9(void)
-{
+int test_9(void) {
     int arr[10] = {71, 66, 19, 20, -8, 43, 54, 3, 2, -10};
     const int len = sizeof(arr) / sizeof(arr[0]);
     int i;
 
     for (i = 0; i < len; i += 1)
-        printf("%d ", arr[i]);
-    printf("\n");
+        PRINT("%d ", arr[i]);
+    PRINT("\n");
 
     bubble_sort(arr, len);
 
     for (i = 0; i < len; i += 1)
-        printf("%d ", arr[i]);
-    printf("\n");
+        PRINT("%d ", arr[i]);
+    PRINT("\n");
 
     return 0;
 }

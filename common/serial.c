@@ -208,7 +208,7 @@ enum {
     LF    = 0x0a,
     CR    = 0x0d,
     ESC   = 0x1b,
-    SPACE = 0X20,
+    SPACE = 0x20,
     UP    = 0x41,
     DOWN  = 0x42,
     RIGHT = 0x43,

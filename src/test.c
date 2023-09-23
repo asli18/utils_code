@@ -2,6 +2,9 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
+#include <config.h>
+#include <test.h>
 
 
 int test_0(void) {
@@ -11,22 +14,22 @@ int test_0(void) {
         char *ptr = (char *)&num;
 
         if (*ptr == 1) {
-            printf("little-endian\n");
+            PRINT("little-endian\n");
         } else {
-            printf("big-endian\n");
+            PRINT("big-endian\n");
         }
-        printf("-----------------------\n");
+        PRINT("-----------------------\n");
     }
     {   /* 64bit unsigned long */
         unsigned long foo = ~0u;
         unsigned long bar = ~0ul;
 
-        printf("unsigned long foo = ~0u;\n");
-        printf("unsigned long bar = ~0ul;\n");
-        printf("\noutput:\n");
-        printf("foo %016lx\n", foo);
-        printf("bar %016lx\n", bar);
-        printf("-----------------------\n");
+        PRINT("unsigned long foo = ~0u;\n");
+        PRINT("unsigned long bar = ~0ul;\n");
+        PRINT("\noutput:\n");
+        PRINT("foo %016lx\n", foo);
+        PRINT("bar %016lx\n", bar);
+        PRINT("-----------------------\n");
     }
     {
         struct rtp_header {
@@ -44,10 +47,10 @@ int test_0(void) {
 
         struct rtp_header *header;
 
-        printf("sizeof(struct rtp_header) = %lu\n", sizeof(struct rtp_header));
-        printf("sizeof(*header) = %lu\n", sizeof(*header));
-        printf("sizeof(header) = %lu\n", sizeof(header));
-        printf("-----------------------\n");
+        PRINT("sizeof(struct rtp_header) = %lu\n", sizeof(struct rtp_header));
+        PRINT("sizeof(*header) = %lu\n", sizeof(*header));
+        PRINT("sizeof(header) = %lu\n", sizeof(header));
+        PRINT("-----------------------\n");
     }
     { // Alignment of Structure
         struct nf_buffer1 {
@@ -62,23 +65,23 @@ int test_0(void) {
             short start;
             short count;
         }__attribute__((packed));
-        printf("sizeof(struct nf_buffer1) = %lu\n", sizeof(struct nf_buffer1));
-        printf("sizeof(struct nf_buffer2) = %lu\n", sizeof(struct nf_buffer2));
-        printf("-----------------------\n");
+        PRINT("sizeof(struct nf_buffer1) = %lu\n", sizeof(struct nf_buffer1));
+        PRINT("sizeof(struct nf_buffer2) = %lu\n", sizeof(struct nf_buffer2));
+        PRINT("-----------------------\n");
     }
     {
         int a[5];                  // if address of a is 0x1000
         int *p1 = (int *)(a + 1);  // p1 should be 0x1004
         int *p2 = (int *)(&a + 1); // p2 should be 0x1014
-        printf("int a[5]; // if address of a is 0x1000\n");
-        printf("int *p1 = (int *)(a + 1);  // p1 should be 0x1004\n");
-        printf("int *p2 = (int *)(&a + 1); // p2 should be 0x1014\n");
-        printf("\noutput:\n");
-        printf("sizeof(a)=%ld, sizeof(&a)=%ld\n", sizeof(a), sizeof(&a));
-        printf("a  0x%016lx\n", (uint64_t)a);
-        printf("p1 0x%016lx (int *)(a + 1) = a[1]\n", (uint64_t)p1);
-        printf("p2 0x%016lx\n", (uint64_t)p2);
-        printf("-----------------------\n");
+        PRINT("int a[5]; // if address of a is 0x1000\n");
+        PRINT("int *p1 = (int *)(a + 1);  // p1 should be 0x1004\n");
+        PRINT("int *p2 = (int *)(&a + 1); // p2 should be 0x1014\n");
+        PRINT("\noutput:\n");
+        PRINT("sizeof(a)=%ld, sizeof(&a)=%ld\n", sizeof(a), sizeof(&a));
+        PRINT("a  0x%016lx\n", (uint64_t)a);
+        PRINT("p1 0x%016lx (int *)(a + 1) = a[1]\n", (uint64_t)p1);
+        PRINT("p2 0x%016lx\n", (uint64_t)p2);
+        PRINT("-----------------------\n");
     }
     {
         unsigned char s[3], mask = 0x3F;
@@ -92,19 +95,19 @@ int test_0(void) {
         b = (short)(((s[1] & mask) << 8) | (s[2] & mask));
         c = (short)((s[0] << 12) | ((s[1] & mask) << 6) | (s[2] & mask));
 
-        printf("unsigned char s[3], mask = 0x3F;\n");
-        printf("short a, b, c;\n");
-        printf("s[0] = 0xE6;\n");
-        printf("s[1] = 0xB1;\n");
-        printf("s[2] = 0x89;\n");
-        printf("a = (short)(s[2] & mask);                                        \n");
-        printf("b = (short)(((s[1] & mask) << 8) | (s[2] & mask));               \n");
-        printf("c = (short)((s[0] << 12) | ((s[1] & mask) << 6) | (s[2] & mask));\n");
+        PRINT("unsigned char s[3], mask = 0x3F;\n");
+        PRINT("short a, b, c;\n");
+        PRINT("s[0] = 0xE6;\n");
+        PRINT("s[1] = 0xB1;\n");
+        PRINT("s[2] = 0x89;\n");
+        PRINT("a = (short)(s[2] & mask);                                        \n");
+        PRINT("b = (short)(((s[1] & mask) << 8) | (s[2] & mask));               \n");
+        PRINT("c = (short)((s[0] << 12) | ((s[1] & mask) << 6) | (s[2] & mask));\n");
 
-        printf("\noutput:\n");
-        printf("a 0x%04x\n", a);
-        printf("b 0x%04x\n", b);
-        printf("c 0x%04x\n", c);
+        PRINT("\noutput:\n");
+        PRINT("a 0x%04x\n", a);
+        PRINT("b 0x%04x\n", b);
+        PRINT("c 0x%04x\n", c);
     }
 
     return 0;
@@ -117,49 +120,49 @@ int test_1(void) {
         short *data = (short *)string;
         unsigned short *data2 = (unsigned short *)array;
 
-        printf("int array[8] = { -1, 0, 1, 2, 3, 4, 5, 6};\n" \
+        PRINT("int array[8] = { -1, 0, 1, 2, 3, 4, 5, 6};\n" \
                "char string[8] = { -1, 0, 1, 2, 3, 4, 5, 6};\n" \
                "short *data = (short *)string;\n" \
                "unsigned short *data2 = (unsigned short *)array;\n\n");
 
-        printf("\noutput:\n");
-        printf("sizeof(char)        %lu\n", sizeof(char));
-        printf("sizeof(short)       %lu\n", sizeof(short));
-        printf("sizeof(int)         %lu\n", sizeof(int));
-        printf("sizeof(long)        %lu\n", sizeof(long));
-        printf("sizeof(long int)    %lu\n", sizeof(long int));
-        printf("sizeof(long long)   %lu\n", sizeof(long long));
-        printf("sizeof(float)       %lu\n", sizeof(float));
-        printf("sizeof(double)      %lu\n", sizeof(double));
-        printf("sizeof(string)      %lu\n", sizeof(string));
-        printf("sizeof(array)       %lu\n", sizeof(array));
-        printf("sizeof(*array)      %lu\n", sizeof(*array));
-        printf("sizeof(string[12])  %lu\n", sizeof(string[12]));
-        printf("sizeof(&string[0])  %lu\n", sizeof(&string[0]));
-        printf("sizeof(data)        %lu\n", sizeof(data));
-        printf("sizeof(*data)       %lu\n", sizeof(*data));
-        printf("\n");
-        printf("array  address: 0x%016lx\n", (uint64_t)&array);
-        printf("string address: 0x%016lx\n", (uint64_t)&string);
-        printf("data   address: 0x%016lx\n", (uint64_t)data);
-        printf("data2  address: 0x%016lx\n", (uint64_t)data2);
-        printf("\n");
-        printf("string[0]      %6d\n", string[0]);
-        printf("string[8]      %6d (out of range)\n", string[8]);
-        printf("array[7]       %6d\n", array[7]);
-        printf("data[0]        %6d 0x%04x\n", data[0], data[0]);
-        printf("data[7]        %6d 0x%04x (out of range)\n", data[7], data[7]);
-        printf("data2[0]       %6d 0x%04x\n", data2[0], data2[0]);
-        printf("data2[3]       %6d 0x%04x\n", data2[3], data2[3]);
-        printf("data2[4]       %6d 0x%04x\n", data2[4], data2[4]);
-        printf("data2[5]       %6d 0x%04x\n", data2[5], data2[5]);
-        printf("*(data2 + 9)   %6d 0x%04x\n", *(data2 + 9), *(data2 + 9));
-        printf("*(data + 1)    %6d 0x%04x\n", *(data + 1), *(data + 1));
-        printf("\n");
+        PRINT("\noutput:\n");
+        PRINT("sizeof(char)        %lu\n", sizeof(char));
+        PRINT("sizeof(short)       %lu\n", sizeof(short));
+        PRINT("sizeof(int)         %lu\n", sizeof(int));
+        PRINT("sizeof(long)        %lu\n", sizeof(long));
+        PRINT("sizeof(long int)    %lu\n", sizeof(long int));
+        PRINT("sizeof(long long)   %lu\n", sizeof(long long));
+        PRINT("sizeof(float)       %lu\n", sizeof(float));
+        PRINT("sizeof(double)      %lu\n", sizeof(double));
+        PRINT("sizeof(string)      %lu\n", sizeof(string));
+        PRINT("sizeof(array)       %lu\n", sizeof(array));
+        PRINT("sizeof(*array)      %lu\n", sizeof(*array));
+        PRINT("sizeof(string[12])  %lu\n", sizeof(string[12]));
+        PRINT("sizeof(&string[0])  %lu\n", sizeof(&string[0]));
+        PRINT("sizeof(data)        %lu\n", sizeof(data));
+        PRINT("sizeof(*data)       %lu\n", sizeof(*data));
+        PRINT("\n");
+        PRINT("array  address: 0x%016lx\n", (uint64_t)&array);
+        PRINT("string address: 0x%016lx\n", (uint64_t)&string);
+        PRINT("data   address: 0x%016lx\n", (uint64_t)data);
+        PRINT("data2  address: 0x%016lx\n", (uint64_t)data2);
+        PRINT("\n");
+        PRINT("string[0]      %6d\n", string[0]);
+        PRINT("string[8]      %6d (out of range)\n", string[8]);
+        PRINT("array[7]       %6d\n", array[7]);
+        PRINT("data[0]        %6d 0x%04x\n", data[0], data[0]);
+        PRINT("data[7]        %6d 0x%04x (out of range)\n", data[7], data[7]);
+        PRINT("data2[0]       %6d 0x%04x\n", data2[0], data2[0]);
+        PRINT("data2[3]       %6d 0x%04x\n", data2[3], data2[3]);
+        PRINT("data2[4]       %6d 0x%04x\n", data2[4], data2[4]);
+        PRINT("data2[5]       %6d 0x%04x\n", data2[5], data2[5]);
+        PRINT("*(data2 + 9)   %6d 0x%04x\n", *(data2 + 9), *(data2 + 9));
+        PRINT("*(data + 1)    %6d 0x%04x\n", *(data + 1), *(data + 1));
+        PRINT("\n");
 
         *data = 0x1234;
-        printf("*data = 0x1234;\n");
-        printf("string[0]      %6d 0x%02x\n", string[0], string[0]);
+        PRINT("*data = 0x1234;\n");
+        PRINT("string[0]      %6d 0x%02x\n", string[0], string[0]);
 
     }
 
@@ -169,27 +172,27 @@ int test_1(void) {
 // type promotion
 int test_2(void) {
     {
-        printf("unsigned char a = 6;\n" \
+        PRINT("unsigned char a = 6;\n" \
                "char b = -20;\n" \
-               "(a + b > 6) ? printf(\"> 6\") : printf(\"<= 6\");\n");
+               "(a + b > 6) ? PRINT(\"> 6\") : PRINT(\"<= 6\");\n");
 
-        printf("\noutput:\n");
+        PRINT("\noutput:\n");
         unsigned char a = 6;
         char b = -20;
-        (a + b > 6) ? printf("> 6") : printf("<= 6");
+        (a + b > 6) ? PRINT("> 6") : PRINT("<= 6");
     }
-    printf("\n-----------------------\n");
+    PRINT("\n-----------------------\n");
     {
-        printf("unsigned int a = 6;;\n" \
+        PRINT("unsigned int a = 6;;\n" \
                "int b = -20;\n" \
-               "(a + b > 6) ? printf(\"> 6\") : printf(\"<= 6\");\n");
+               "(a + b > 6) ? PRINT(\"> 6\") : PRINT(\"<= 6\");\n");
 
-        printf("\noutput:\n");
+        PRINT("\noutput:\n");
         unsigned int a = 6;
         int b = -20;
-        (a + b > 6) ? printf("> 6") : printf("<= 6");
+        (a + b > 6) ? PRINT("> 6") : PRINT("<= 6");
     }
-    printf("\n");
+    PRINT("\n");
 
     return 0;
 }
@@ -199,12 +202,12 @@ int test_5(void) {
     uint32_t a = 9, b = 9;
 
     do {
-        printf("%u x %u = %2u\n", a, b, (a * b));
+        PRINT("%u x %u = %2u\n", a, b, (a * b));
 
         if (--b == 0) {
             b = 9;
             a -= 1;
-            printf("\n");
+            PRINT("\n");
         }
     } while (a);
 
@@ -213,7 +216,7 @@ int test_5(void) {
 
 // MSB->LSB, LSB->MSB
 int test_6(void) {
-    printf("Reverse bits MSB->LSB LSB->MSB (32-bit)\n");
+    PRINT("Reverse bits MSB->LSB LSB->MSB (32-bit)\n");
     {
         uint32_t target = 0x815a070f;
         uint32_t output = 0;
@@ -221,11 +224,11 @@ int test_6(void) {
         for (uint32_t i = 0; i < 32; ++i) {
             output |= ((target >> i) & 1) << (31 - i);
         }
-        printf("ori: 0x%08x\n", target);
-        printf("rev: 0x%08x\n", output);
+        PRINT("ori: 0x%08x\n", target);
+        PRINT("rev: 0x%08x\n", output);
     }
 
-    printf("Reverse bits MSB->LSB LSB->MSB (64-bit)\n");
+    PRINT("Reverse bits MSB->LSB LSB->MSB (64-bit)\n");
     {
         uint64_t target = 0xffff7070815a070f;
         uint64_t output = 0;
@@ -233,8 +236,8 @@ int test_6(void) {
         for (uint32_t i = 0; i < 64; ++i) {
             output |= ((target >> i) & 1) << (63 - i);
         }
-        printf("ori: 0x%016lx\n", target);
-        printf("rev: 0x%016lx\n", output);
+        PRINT("ori: 0x%016lx\n", target);
+        PRINT("rev: 0x%016lx\n", output);
     }
 
     return 0;
@@ -254,48 +257,48 @@ int test_7(void)
 
     uint32_t y, x;
 
-    printf("Full pyramid of numbers:\n");
+    PRINT("Full pyramid of numbers:\n");
 
     /* Run parent loop */
     for (y = LOOP_NUM; y > 0; --y) {
         /* Print space */
         for(x = y - 1; x > 0; --x) {
-            printf(" ");
+            PRINT(" ");
         }
 
         /* Run loop to print first part of row */
         for(x = 1; x <= (LOOP_NUM - y) + 1; ++x) {
-            printf("%d", x);
+            PRINT("%d", x);
         }
 
         /* Run loop to print second part of row */
         for(x = (LOOP_NUM - y); x > 0; --x) {
-            printf("%d", x);
+            PRINT("%d", x);
         }
 
-        printf("\n");
+        PRINT("\n");
     }
 
-    printf("\nInverted:\n");
+    PRINT("\nInverted:\n");
 
     /* Run parent loop */
     for (y = LOOP_NUM; y > 0; --y) {
         /* Print space */
         for (x = LOOP_NUM - y; x != 0; --x) {
-            printf(" ");
+            PRINT(" ");
         }
 
         /* Run loop to print first part of row */
         for (x = 1; x <= y; ++x) {
-            printf("%d", x);
+            PRINT("%d", x);
         }
 
         /* Run loop to print second part of row */
         for (x = y - 1; x >= 1; --x) {
-            printf("%d",x);
+            PRINT("%d",x);
         }
 
-        printf("\n");
+        PRINT("\n");
     }
 
     return 0;
@@ -323,13 +326,72 @@ int test_8(void) {
 #define MAX     (30)
     unsigned int count, num;
 
-    printf("Prime number:\n");
+    PRINT("Prime number:\n");
     for (count = 0, num = 1; count < MAX; ++num) {
         if (is_prime(num)) {
             count += 1;
-            printf("No.%3u  %3u\r\n", count, num);
+            PRINT("No.%3u  %3u\r\n", count, num);
         }
     }
 
     return 0;
 }
+
+int cmd_test_case(int argc, char *argv[]) {
+    int (*test_ptr[])(void) = {
+        test_0,
+        test_1,
+        test_2, // type promotion
+        test_3, // Reverse a string
+        test_4, // Reverse words in a string
+        test_5, // 9 x 9 Multiplication table
+        test_6, // Reverse bits (32/64-bit)
+        test_7, // print a full pyramid of numbers
+        test_8, // check prime number
+        test_9, // bubble sort
+    };
+    uint32_t bound = sizeof(test_ptr)/sizeof(*test_ptr);
+    uint32_t test_index;
+    int number;
+    char *endptr;
+
+    // Check if a single argument is passed and whether it's a number
+    if (argc == 1 && isdigit(*argv[0])) {
+
+        // Check if the number is in hexadecimal notation
+        if (argv[0][0] == '0' && (argv[0][1] == 'x' || argv[0][1] == 'X')) {
+            // Convert the hexadecimal number to an integer
+            number = strtol(argv[0], &endptr, 16);
+            PRINT("The number you entered is in hexadecimal notation: %u\n", number);
+        } else {
+            // Convert the decimal number to an integer
+            number = atoi(argv[0]);
+            PRINT("The number you entered is in decimal notation: %u\n", number);
+        }
+
+        test_index = (uint32_t)number;
+        if (test_index < bound) {
+            PRINT("[ RUN      ] %s %d\n", __func__, test_index);
+            int rc = (*test_ptr[test_index])();
+            PRINT("[       OK ] %s %d\n", __func__, test_index);
+
+            PRINT("[==========]\n");
+            if (rc) {
+                PRINT("[  FAILED  ] error code: %d\n", rc);
+                return -1;
+            } else {
+                PRINT("[  PASSED  ]\n");
+                return 0;
+            }
+
+        } else {
+            PRINT("[  FAILED  ] out of test case list, range: 0 ~ %d\n", (bound - 1));
+            return -1;
+        }
+
+    } else {
+        PRINT("Please enter a single number(DEC/HEX) as an argument.\n");
+        return -1;
+    }
+}
+

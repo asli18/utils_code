@@ -1,10 +1,10 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c18
 #CFLAGS += -g # debug
-#CFLAGS += -Wno-unused-value
-LDFLAGS =
+#CFLAGS += -Wno-unused-value -pedantic
+LDFLAGS = -lncurses
 
-TARGET_EXEC := test
+TARGET_EXEC := cli
 INSTALL_DIR ?= install
 BUILD_DIR := build
 SRC_DIRS := src
