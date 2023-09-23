@@ -35,40 +35,35 @@ static struct command_set cmd_list[] = {
 static char cmd_buffer[CMD_BUF_LEN];
 static int buf_pos; // Current position in the buffer
 
-static unsigned int string_to_args(const char *string,
+static unsigned int string_to_args(char *ptr,
                                    char *argv[],
                                    const unsigned int max_argv) {
     unsigned int n = 0;
     const char delimiter = ' ';
-    char *p = (char *)string;
 
-    if (p == NULL) {
+    if (ptr == NULL) {
         return 0;
     }
 
-    while (*p == ' ') {
-        p++;
+    while (*ptr == ' ') {
+        ptr += 1;
     }
 
-    while (*p) {
-        argv[n++] = p;
+    while (*ptr && (n < max_argv)) {
+        argv[n++] = ptr;
 
-        while ((*p != delimiter) && *p) {
-            p += 1;
+        while ((*ptr != delimiter) && *ptr) {
+            ptr += 1;
         }
 
-        if (*p == '\0') {
+        if (*ptr == '\0') {
             break;
         }
 
-        *p++ = '\0';
+        *ptr++ = '\0';
 
-        while (*p == ' ' && *p) {
-            p += 1;
-        }
-
-        if (n == max_argv) {
-            break;
+        while (*ptr == ' ') {
+            ptr += 1;
         }
     }
     return n;
