@@ -25,11 +25,32 @@ enum {
     DEL   = 0x7f,
 };
 
+static int cmd_display(int argc, char *argv[]);
 static int cmd_help(int argc, char *argv[]);
 
 static struct command_set cmd_list[] = {
-    { cmd_help, "?", "help" },
-    { cmd_test_case, "test", "test case" },
+    { cmd_display, "?",
+      "?\n"
+      "    Display all built-in commands in the system."
+    },
+    { cmd_help, "help",
+      "help [command]\n"
+      "    Display information about built-in commands."
+    },
+    { cmd_test_case, "test",
+      "test [NUM]\n"
+      "    Execute the specified test case.\n"
+      "    0: misc, alignment of structure and bitwise operations\n"
+      "    1: size of variables and pointer operations\n"
+      "    2: type promotion\n"
+      "    3: reverse a string\n"
+      "    4: reverse words in a string\n"
+      "    5: 9 x 9 multiplication table\n"
+      "    6: reverse bits (32/64-bit)\n"
+      "    7: print a full pyramid of numbers\n"
+      "    8: check prime number\n"
+      "    9: bubble sort"
+    },
 };
 
 static char cmd_buffer[CMD_BUF_LEN];
@@ -69,15 +90,39 @@ static unsigned int string_to_args(char *ptr,
     return n;
 }
 
-static int cmd_help(int argc, char *argv[]) {
+static int cmd_display(int argc, char *argv[]) {
+
+    if (argc > 0) {
+        PRINT("Invalid parameter\n");
+        return -1;
+    }
+
     PRINT("Command:\n");
     for (unsigned int cmd_id = 0;
          cmd_id < (sizeof(cmd_list)/sizeof(struct command_set));
          ++cmd_id) {
-            PRINT("%s ", cmd_list[cmd_id].cmd_string);
+        PRINT("%s ", cmd_list[cmd_id].cmd_string);
     }
     PRINT("\n");
     return 0;
+}
+
+static int cmd_help(int argc, char *argv[]) {
+
+    if (argc == 1) {
+        for (unsigned int cmd_id = 0;
+             cmd_id < (sizeof(cmd_list)/sizeof(struct command_set));
+             ++cmd_id) {
+
+            if (!strcmp(argv[0], cmd_list[cmd_id].cmd_string)) {
+                PRINT("%s\n", cmd_list[cmd_id].info);
+                return 0;
+            }
+        }
+    }
+
+    PRINT("Invalid parameter\n");
+    return -1;
 }
 
 static void clear_buffer(void) {

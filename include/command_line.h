@@ -7,7 +7,7 @@
 struct command_set {
     int (*func)(int argc, char *argv[]);
     const char *cmd_string;
-    const char *help_string;
+    const char *info;
 };
 
 void cmd_proc(void);

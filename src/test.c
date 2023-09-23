@@ -341,14 +341,14 @@ int cmd_test_case(int argc, char *argv[]) {
     int (*test_ptr[])(void) = {
         test_0,
         test_1,
-        test_2, // type promotion
-        test_3, // Reverse a string
-        test_4, // Reverse words in a string
-        test_5, // 9 x 9 Multiplication table
-        test_6, // Reverse bits (32/64-bit)
-        test_7, // print a full pyramid of numbers
-        test_8, // check prime number
-        test_9, // bubble sort
+        test_2,
+        test_3,
+        test_4,
+        test_5,
+        test_6,
+        test_7,
+        test_8,
+        test_9,
     };
     uint32_t bound = sizeof(test_ptr)/sizeof(*test_ptr);
     uint32_t test_index;
@@ -371,9 +371,11 @@ int cmd_test_case(int argc, char *argv[]) {
 
         test_index = (uint32_t)number;
         if (test_index < bound) {
-            PRINT("[ RUN      ] %s %d\n", __func__, test_index);
+            char test_case_str[] = "test case";
+
+            PRINT("[ RUN      ] %s %d\n", test_case_str, test_index);
             int rc = (*test_ptr[test_index])();
-            PRINT("[       OK ] %s %d\n", __func__, test_index);
+            PRINT("[       OK ] %s %d\n", test_case_str, test_index);
 
             PRINT("[==========]\n");
             if (rc) {
