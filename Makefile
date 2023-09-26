@@ -2,6 +2,10 @@ CC = gcc
 CFLAGS = -Wall -Wextra -std=c18
 #CFLAGS += -g # debug
 #CFLAGS += -Wno-unused-value -pedantic
+
+# Include header file in all compilation processes
+CFLAGS += -include config.h
+
 LDFLAGS = -lncurses
 
 TARGET_EXEC := cli
