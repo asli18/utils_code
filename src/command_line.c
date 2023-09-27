@@ -25,36 +25,14 @@ enum {
     DEL   = 0x7f,
 };
 
-static int cmd_display(int argc, char *argv[]);
-static int cmd_help(int argc, char *argv[]);
-
-static struct command_set cmd_list[] = {
-    { cmd_display, "?",
-      "?\n"
-      "    Display all built-in commands in the system."
-    },
-    { cmd_help, "help",
-      "help [command]\n"
-      "    Display information about built-in commands."
-    },
-    { cmd_test_case, "test",
-      "test [NUM]\n"
-      "    Execute the specified test case.\n"
-      "    0: misc, alignment of structure and bitwise operations\n"
-      "    1: size of variables and pointer operations\n"
-      "    2: type promotion\n"
-      "    3: reverse a string\n"
-      "    4: reverse words in a string\n"
-      "    5: 9 x 9 multiplication table\n"
-      "    6: reverse bits (32/64-bit)\n"
-      "    7: print a full pyramid of numbers\n"
-      "    8: check prime number\n"
-      "    9: bubble sort"
-    },
-};
+extern char __start_cmd_table[];
+extern char __stop_cmd_table[];
 
 static char cmd_buffer[CMD_BUF_LEN];
-static int buf_pos; // Current position in the buffer
+static unsigned int buf_pos; // Current position in the buffer
+static unsigned int cmd_table_size;
+static struct command_set * const cmd_table_entry = (struct command_set *)__start_cmd_table;
+static struct command_set * const cmd_table_end = (struct command_set *)__stop_cmd_table;
 
 static unsigned int string_to_args(char *ptr,
                                    char *argv[],
@@ -97,27 +75,36 @@ static int cmd_display(int argc, char *argv[]) {
         return -1;
     }
 
+    struct command_set *cmd_ptr = cmd_table_entry;
+
     PRINT("Command:\n");
-    for (unsigned int cmd_id = 0;
-         cmd_id < (sizeof(cmd_list)/sizeof(struct command_set));
-         ++cmd_id) {
-        PRINT("%s ", cmd_list[cmd_id].cmd_string);
+
+    while (cmd_ptr < cmd_table_end) {
+        PRINT("%s ", cmd_ptr->cmd_string);
+        cmd_ptr += 1;
     }
     PRINT("\n");
     return 0;
 }
 
+struct command_set _cmd_display CMD_ATTRIBUTES = {
+    cmd_display,
+    "?",
+    "?\n"
+    "    Display all built-in commands in the system."
+};
+
 static int cmd_help(int argc, char *argv[]) {
 
     if (argc == 1) {
-        for (unsigned int cmd_id = 0;
-             cmd_id < (sizeof(cmd_list)/sizeof(struct command_set));
-             ++cmd_id) {
+        struct command_set *cmd_ptr = cmd_table_entry;
 
-            if (!strcmp(argv[0], cmd_list[cmd_id].cmd_string)) {
-                PRINT("%s\n", cmd_list[cmd_id].info);
+        while (cmd_ptr < cmd_table_end) {
+            if (!strcmp(argv[0], cmd_ptr->cmd_string)) {
+                PRINT("%s\n", cmd_ptr->info);
                 return 0;
             }
+            cmd_ptr += 1;
         }
     }
 
@@ -125,7 +112,14 @@ static int cmd_help(int argc, char *argv[]) {
     return -1;
 }
 
-static void clear_buffer(void) {
+struct command_set _cmd_help CMD_ATTRIBUTES = {
+    cmd_help,
+    "help",
+    "help [command]\n"
+    "    Display information about built-in commands."
+};
+
+static void clear_cmd_buffer(void) {
     memset((void *)cmd_buffer, 0, sizeof(cmd_buffer));
     buf_pos = 0;
 }
@@ -147,15 +141,14 @@ void cmd_proc_enter(void) {
         }
 #endif
 
-        for (unsigned int cmd_id = 0;
-             cmd_id < (sizeof(cmd_list)/sizeof(struct command_set));
-             ++cmd_id) {
-
-            if (!strcmp(argv[0], cmd_list[cmd_id].cmd_string)) {
-                rc = cmd_list[cmd_id].func(argc - 1, argv + 1);
+        struct command_set *cmd_ptr = cmd_table_entry;
+        while (cmd_ptr < cmd_table_end) {
+            if (!strcmp(argv[0], cmd_ptr->cmd_string)) {
+                rc = cmd_ptr->func(argc - 1, argv + 1);
                 match = true;
                 break;
             }
+            cmd_ptr += 1;
         }
 
         if (match == false) {
@@ -172,6 +165,11 @@ void cmd_proc_enter(void) {
     PRINT(CMD_PROMPT);
 }
 
+static void cmd_init(void) {
+    clear_cmd_buffer();
+    cmd_table_size = (__stop_cmd_table - __start_cmd_table)/sizeof(struct command_set);
+}
+
 void cmd_proc(void) {
     int in_char; // ncurses getch() returns an integer
 
@@ -181,7 +179,8 @@ void cmd_proc(void) {
     scrollok(stdscr, true); // Enable screen scrolling
     keypad(stdscr, true); // Enable special keyboard keys (e.g., arrow keys)
 
-    clear_buffer();
+    cmd_init();
+
     PRINT(CMD_PROMPT);
 
     while (1) {

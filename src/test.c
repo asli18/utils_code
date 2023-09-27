@@ -4,6 +4,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <test.h>
+#include <command_line.h>
 
 
 int test_0(void) {
@@ -395,4 +396,21 @@ int cmd_test_case(int argc, char *argv[]) {
         return -1;
     }
 }
+
+struct command_set _cmd_test_case CMD_ATTRIBUTES = {
+    cmd_test_case,
+    "test",
+    "test [NUM]\n"
+    "    Execute the specified test case.\n"
+    "    0: misc, alignment of structure and bitwise operations\n"
+    "    1: size of variables and pointer operations\n"
+    "    2: type promotion\n"
+    "    3: reverse a string\n"
+    "    4: reverse words in a string\n"
+    "    5: 9 x 9 multiplication table\n"
+    "    6: reverse bits (32/64-bit)\n"
+    "    7: print a full pyramid of numbers\n"
+    "    8: check prime number\n"
+    "    9: bubble sort"
+};
 
