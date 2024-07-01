@@ -1,5 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c18
+CFLAGS += -ffunction-sections -fdata-sections
 #CFLAGS += -g # debug
 #CFLAGS += -Wno-unused-value -pedantic
 
@@ -7,6 +8,7 @@ CFLAGS = -Wall -Wextra -std=c18
 CFLAGS += -include config.h
 
 LDFLAGS = -lncurses
+LDFLAGS += -Wl,--print-memory-usage -Wl,--gc-sections
 
 TARGET_EXEC := cli
 INSTALL_DIR ?= install
@@ -39,6 +41,11 @@ CPPFLAGS := $(INC_FLAGS) -MMD -MP
 # The final build step.
 $(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
 	$(CC) $(OBJS) -o $@ $(LDFLAGS)
+        @size $(BUILD_DIR)/$(TARGET_EXEC)
+        @nm -n --defined-only $(BUILD_DIR)/$(TARGET_EXEC) > $(BUILD_DIR)/symbol.txt
+        @nm -nS --defined-only $(BUILD_DIR)/$(TARGET_EXEC) > $(BUILD_DIR)/symbol_size.txt
+        @echo "Symbol saved to $(BUILD_DIR)/symbol.txt"
+        @echo "Symbol with size saved to $(BUILD_DIR)/symbol_size.txt"
 
 # Build step for C source
 $(BUILD_DIR)/%.c.o: %.c
